@@ -1,0 +1,31 @@
+from PIL import Image, ImageDraw, ImageFont
+
+def text_to_image(text, output_image='output_image.png', font_size=40, image_size=(400, 200), background_color=(255, 255, 255), text_color=(0, 0, 0)):
+    # Create a blank image with a white background
+    img = Image.new('RGB', image_size, color=background_color)
+    
+    # Initialize ImageDraw object
+    draw = ImageDraw.Draw(img)
+    
+    # Load a font
+    try:
+        font = ImageFont.truetype("arial.ttf", font_size)
+    except IOError:
+        font = ImageFont.load_default()
+    
+    # Calculate the size of the text
+    text_width, text_height = draw.textsize(text, font=font)
+    
+    # Calculate position to center the text
+    position = ((image_size[0] - text_width) // 2, (image_size[1] - text_height) // 2)
+    
+    # Add text to image
+    draw.text(position, text, font=font, fill=text_color)
+    
+    # Save the image
+    img.save(output_image)
+    print(f"Image saved as {output_image}")
+
+# Example usage:
+text = "Hello, World!"
+text_to_image(text)
